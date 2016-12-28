@@ -36,31 +36,6 @@ MessageController.prototype.create = function () {
   return mongodb.ResourceController.prototype.create.call (this, opts);
 };
 
-MessageController.prototype.getAll = function () {
-  var opts = {
-    on: {
-      prepareOptions: function (req, callback) {
-        var token = req.headers.authorization.split(' ')[1];
-
-        User.findOne({token: token}, function (err, user) {
-          /* istanbul ignore if */
-          if (err) {
-            return callback(err);
-          }
-
-          if (!req.query.org_id) {
-            req.query.org_id = user.org_id;
-          }
-
-          return callback ();
-        });
-      }
-    }
-  };
-
-  return mongodb.ResourceController.prototype.getAll.call (this, opts);
-};
-
 blueprint.controller (MessageController, ResourceController);
 
 module.exports = MessageController;

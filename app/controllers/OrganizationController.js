@@ -1,7 +1,6 @@
 var blueprint = require ('@onehilltech/blueprint')
   , mongodb = require ('@onehilltech/blueprint-mongodb')
   , ResourceController = mongodb.ResourceController
-  , messaging = blueprint.messaging
   , async = require ('async')
   , nodemailer = require ('nodemailer')
   , nodeMailers = require ('../middleware/nodeMailers')

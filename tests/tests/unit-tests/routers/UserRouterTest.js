@@ -192,7 +192,7 @@ describe ('UserRouter', function () {
 
       it ('should get all users by organization', function (done) {
         request (blueprint.app.server.app)
-          .get ('/v1/organizations/users')
+          .get ('/v1/admin/users?org_id=' + org_id)
           .set ('Authorization', 'bearer ' + adminAccessToken)
           .expect (200, done);
       });

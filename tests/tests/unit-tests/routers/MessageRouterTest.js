@@ -98,14 +98,14 @@ describe ('MessageRouter', function () {
 
       it ('should retrieve all messages by sender', function (done) {
         request (blueprint.app.server.app)
-        .get ('/v1/messages/sent')
+        .get ('/v1/messages?sender=' + newAdmin.username)
         .set ('Authorization', 'bearer ' + adminAccessToken)
         .expect (200, done);
       });
 
       it ('should retrieve messages to be received by user', function (done) {
         request (blueprint.app.server.app)
-        .get ('/v1/messages/received')
+        .get ('/v1/messages?receiver=' + newAdmin.username)
         .set('Authorization', 'bearer ' + adminAccessToken)
         .expect(200)
         .end(function (err, res) {
@@ -118,7 +118,7 @@ describe ('MessageRouter', function () {
 
       it ('should retrieve all messages by organization', function (done) {
         request (blueprint.app.server.app)
-        .get ('/v1/admin/organizations/messages')
+        .get ('/v1/messages?org_id=' + newAdmin.org_id)
         .set ('Authorization', 'bearer ' + adminAccessToken)
         .expect (200, done);
       });

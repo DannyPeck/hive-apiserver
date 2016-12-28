@@ -48,7 +48,10 @@ MessageController.prototype.getAll = function () {
             return callback(err);
           }
 
-          req.query.org_id = user.org_id;
+          if (!req.query.org_id) {
+            req.query.org_id = user.org_id;
+          }
+
           return callback ();
         });
       }

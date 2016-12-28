@@ -24,9 +24,20 @@ OrganizationController.prototype.create = function () {
   var opts = {
     on: {
       preCreate: function (req, doc, callback) {
+          async function (doc, callback) {
+            User.findOne ({username: doc.username, org_id: doc.org_id}, function (err, user) {
+              if (err) { return callback (err); }
+
+              if (user) {
+                return callback ('user already exists', null);
+              } else {
+                return callback (null, doc);
+              }
+            });
+          }
+
         Organization.findOne({ name: doc.name }, function (err, organization) {
           if (err) { return callback (err); }
-
           if (organization) {
             return callback ('Organization already exists', null);
           } else {

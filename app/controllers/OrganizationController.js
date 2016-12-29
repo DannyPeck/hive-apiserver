@@ -42,7 +42,7 @@ OrganizationController.prototype.create = function () {
               } else {
                 return callback (null, doc);
               }
-            });
+            })
         ], cb);
       },
 

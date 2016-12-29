@@ -37,7 +37,7 @@ OrganizationController.prototype.create = function () {
             });
           },
           function (doc, callback) {
-            Organization.findOne({ name: doc.name }, function (err, organization) {
+            Organization.findOne({name: doc.name}, function (err, organization) {
               if (err) { return callback (err); }
               if (organization) {
                 return callback ('Organization already exists', null);

@@ -18,18 +18,10 @@ MessageController.prototype.create = function () {
   var opts = {
     on: {
       preCreate: function (req, doc, callback) {
-        var token = req.headers.authorization.split(' ')[1];
+        doc.org_id = req.user.org_id;
+        doc.sender = req.user.username;
 
-        User.findOne({token: token}, function (err, user) {
-          /* istanbul ignore if */
-          if (err) {
-            return callback(err);
-          }
-
-          doc.org_id = user.org_id;
-          doc.sender = user.username;
-          return callback(null, doc);
-        });
+        return callback(null, doc);
       }
     }
   };

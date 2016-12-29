@@ -25,7 +25,6 @@ OrganizationController.prototype.create = function () {
     on: {
       preCreate: function (req, doc, callback) {
         async.series([
-          function (doc, callback) {
             User.findOne ({email: doc.email}, function (err, user) {
               if (err) { return callback (err); }
 
@@ -34,9 +33,8 @@ OrganizationController.prototype.create = function () {
               } else {
                 return callback (null, doc);
               }
-            });
-          },
-          function (doc, callback) {
+            }); ,
+
             Organization.findOne({name: doc.name}, function (err, organization) {
               if (err) { return callback (err); }
               if (organization) {
@@ -45,7 +43,6 @@ OrganizationController.prototype.create = function () {
                 return callback (null, doc);
               }
             });
-          }
         ], cb);
       },
 

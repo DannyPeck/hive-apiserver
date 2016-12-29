@@ -3,7 +3,7 @@ module.exports = exports = {
   '/organizations' : {
     resource: {
       controller: 'OrganizationController',
-      deny: ['create', 'delete']
+      deny: ['create', 'update', 'delete']
     }
 
   }

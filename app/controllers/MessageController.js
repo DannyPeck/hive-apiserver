@@ -36,6 +36,31 @@ MessageController.prototype.create = function () {
   return mongodb.ResourceController.prototype.create.call (this, opts);
 };
 
+MessageController.prototype.getAll = function () {
+  var opts = {
+    on: {
+      authorize: function (req, callback) {
+        var role = req.user.role;
+
+        if (role != 'admin') {
+          var whitelist = ['sender', 'receiver'];
+          var queries = req.query;
+
+          for (var query in queries) {
+            if (whitelist.indexOf (query) < 0) {
+              return callback ('unauthorized query parameter');
+            }
+          }
+        }
+
+        return callback ();
+      }
+    }
+  }
+
+  return mongodb.ResourceController.prototype.getAll.call (this, opts);
+};
+
 blueprint.controller (MessageController, ResourceController);
 
 module.exports = MessageController;

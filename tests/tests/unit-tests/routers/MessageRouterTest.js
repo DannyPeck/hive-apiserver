@@ -22,6 +22,8 @@ describe ('MessageRouter', function () {
 
     var adminAccessToken;
     var newAdmin;
+    var newUser;
+    var userAccessToken;
     var org_id;
 
     before (function (done) {
@@ -68,6 +70,37 @@ describe ('MessageRouter', function () {
               return callback ();
             });
           });
+        },
+
+        function (callback) {
+          var userData = users[0];
+          var User = blueprint.app.models.User;
+          newUser = new User (userData);
+          newUser.org_id = org_id;
+
+          newUser.save(function (err, user) {
+            if (err) {
+              return callback (err);
+            }
+
+            var data = {
+              email: user.email,
+              password: user.password
+            };
+
+            request(blueprint.app.server.app)
+            .post('/login')
+            .send(data)
+            .expect(200)
+            .end(function (err, res) {
+              if (err) {
+                return callback (err);
+              }
+
+              userAccessToken = res.body.token;
+              return callback ();
+            });
+          });
         }
       ], done);
     });
@@ -77,13 +110,13 @@ describe ('MessageRouter', function () {
         var messageData = messages[0];
         request (blueprint.app.server.app)
         .post ('/v1/messages')
-        .set ('Authorization', 'bearer ' + adminAccessToken)
+        .set ('Authorization', 'bearer ' + userAccessToken)
         .send({message: messageData})
         .expect (200)
         .end(function (err, res) {
           if (err) { return done (err); }
 
-          expect (res.body.message.receiver).to.equal (newAdmin.username);
+          expect (res.body.message.receiver).to.equal (newUser.username);
           return done ();
         });
       });
@@ -98,20 +131,20 @@ describe ('MessageRouter', function () {
 
       it ('should retrieve all messages by sender', function (done) {
         request (blueprint.app.server.app)
-        .get ('/v1/messages?sender=' + newAdmin.username)
-        .set ('Authorization', 'bearer ' + adminAccessToken)
+        .get ('/v1/messages?sender=' + newUser.username)
+        .set ('Authorization', 'bearer ' + userAccessToken)
         .expect (200, done);
       });
 
       it ('should retrieve messages to be received by user', function (done) {
         request (blueprint.app.server.app)
-        .get ('/v1/messages?receiver=' + newAdmin.username)
-        .set('Authorization', 'bearer ' + adminAccessToken)
+        .get ('/v1/messages?receiver=' + newUser.username)
+        .set('Authorization', 'bearer ' + userAccessToken)
         .expect(200)
         .end(function (err, res) {
           if (err) { return done (err); }
 
-          expect (res.body.messages[0].receiver).to.equal (newAdmin.username);
+          expect (res.body.messages[0].receiver).to.equal (newUser.username);
           return done ();
         });
       });
@@ -121,6 +154,20 @@ describe ('MessageRouter', function () {
         .get ('/v1/messages?org_id=' + newAdmin.org_id)
         .set ('Authorization', 'bearer ' + adminAccessToken)
         .expect (200, done);
+      });
+
+      it ('should fail to retrieve all messages using unauthorized query parameters', function (done) {
+        request (blueprint.app.server.app)
+        .get ('/v1/messages?org_id=' + newUser.org_id)
+        .set ('Authorization', 'bearer ' + userAccessToken)
+        .expect (400, done);
+      });
+
+      it ('should fail to retrieve all messages for a user request', function (done) {
+        request (blueprint.app.server.app)
+        .get ('/v1/messages')
+        .set ('Authorization', 'bearer ' + userAccessToken)
+        .expect (400, done);
       });
     });
   });

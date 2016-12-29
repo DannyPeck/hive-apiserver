@@ -25,26 +25,30 @@ OrganizationController.prototype.create = function () {
     on: {
       preCreate: function (req, doc, callback) {
         async.series([
-            User.findOne ({email: doc.email}, function (err, user) {
-              if (err) { return callback (err); }
+            function (doc, callback) {
+              User.findOne ({email: doc.email}, function (err, user) {
+                if (err) { return callback (err); }
 
-              if (user) {
-                return callback ('email already taken', null);
-              } else {
-                return callback (null, doc);
-              }
-            }),
+                if (user) {
+                  return callback ('email already taken', null);
+                } else {
+                  return callback (null, doc);
+                }
+              });
+            },
+            function (doc, callback) {
+              Organization.findOne({ name: doc.name }, function (err, organization) {
+                if (err) { return callback (err); }
+                if (organization) {
+                  return callback ('Organization already exists', null);
+                } else {
+                  return callback (null, doc);
+                }
+              });
+            }
+        ], cb);
+      },
 
-        Organization.findOne({ name: doc.name }, function (err, organization) {
-          if (err) { return callback (err); }
-          if (organization) {
-            return callback ('Organization already exists', null);
-          } else {
-            return callback (null, doc);
-          }
-        });
-      ], cb);
-    },
       postExecute: function (req, organization, cb) {
         async.waterfall ([
           function (callback) {

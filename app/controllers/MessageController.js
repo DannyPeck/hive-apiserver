@@ -43,7 +43,7 @@ MessageController.prototype.getAll = function () {
       authorize: function (req, callback) {
         var role = req.user.role;
 
-        if (role != 'admin') {
+        if (role !== 'admin') {
           var queries = req.query;
 
           if (_.isEmpty (queries)) {

@@ -33,7 +33,7 @@ OrganizationController.prototype.create = function () {
               } else {
                 return callback (null, doc);
               }
-            }); ,
+            }),
 
             Organization.findOne({name: doc.name}, function (err, organization) {
               if (err) { return callback (err); }

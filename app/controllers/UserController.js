@@ -78,6 +78,35 @@ UserController.prototype.profile = function () {
   }
 };
 
+const USER_PROJECTION = {
+  password: 0,
+  token: 0
+};
+
+UserController.prototype.getAll = function () {
+  var opts = {
+    on: {
+      prepareProjection: function (req, callback) {
+        return callback (null, USER_PROJECTION);
+      }
+    }
+  };
+
+  return mongodb.ResourceController.prototype.getAll.call (this, opts);
+};
+
+UserController.prototype.get = function () {
+  var opts = {
+    on: {
+      prepareProjection: function (req, callback) {
+        return callback (null, USER_PROJECTION);
+      }
+    }
+  };
+
+  return mongodb.ResourceController.prototype.get.call (this, opts);
+};
+
 blueprint.controller (UserController, ResourceController);
 
 module.exports = exports = UserController;

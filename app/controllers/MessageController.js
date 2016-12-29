@@ -46,17 +46,17 @@ MessageController.prototype.getAll = function () {
           var whitelist = ['sender', 'receiver'];
           var queries = req.query;
 
-          for (var query in queries) {
-            if (whitelist.indexOf (query) < 0) {
+          _.forEach(queries, function (query) {
+            if (_.includes(whitelist, query)) {
               return callback ('unauthorized query parameter');
             }
-          }
+          });
         }
 
         return callback ();
       }
     }
-  }
+  };
 
   return mongodb.ResourceController.prototype.getAll.call (this, opts);
 };

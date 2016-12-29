@@ -3,6 +3,7 @@
 var blueprint = require ('@onehilltech/blueprint')
   , mongodb = require ('@onehilltech/blueprint-mongodb')
   , ResourceController = mongodb.ResourceController
+  , _ = require ('lodash')
   ;
 
 var Message = require ('../models/Message')
@@ -43,14 +44,19 @@ MessageController.prototype.getAll = function () {
         var role = req.user.role;
 
         if (role != 'admin') {
-          var whitelist = ['sender', 'receiver'];
           var queries = req.query;
 
-          _.forEach(queries, function (query) {
-            if (_.includes(whitelist, query)) {
+          if (_.isEmpty (queries)) {
+            return callback ('unauthorized');
+          }
+
+          var whitelist = ['sender', 'receiver'];
+
+          for (var query in queries) {
+            if (!_.includes (whitelist, query)) {
               return callback ('unauthorized query parameter');
             }
-          });
+          }
         }
 
         return callback ();

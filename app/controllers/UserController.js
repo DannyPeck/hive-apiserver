@@ -17,19 +17,9 @@ UserController.prototype.create = function ()
   var opts = {
     on: {
       preCreate: function (req, doc, cb) {
+        doc.org_id = req.user.org_id;
         async.waterfall ([
           function (callback) {
-            var token = req.headers.authorization.split(' ')[1];
-
-            User.findOne ({token: token}, function (err, admin) {
-              if (err) { return callback (err); }
-
-              doc.org_id = admin.org_id;
-              return callback (null, doc);
-            });
-          },
-
-          function (doc, callback) {
             User.findOne ({email: doc.email}, function (err, user) {
               if (err) { return callback (err); }
 

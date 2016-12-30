@@ -15,5 +15,7 @@ var schema = new mongodb.Schema ({
   content:  {type: String, required: true, trim: true}
 });
 
-const COLLECTION_NAME = 'Message';
-module.exports = exports = mongodb.model  (COLLECTION_NAME, schema);
+const MODEL_NAME = 'message';
+const COLLECTION_NAME = 'messages';
+
+module.exports = mongodb.resource (MODEL_NAME, schema, COLLECTION_NAME);

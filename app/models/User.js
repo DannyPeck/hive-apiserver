@@ -16,10 +16,11 @@ var schema = new mongodb.Schema({
   token:      {type: String, required: false, trim: true}
 });
 
-const COLLECTION_NAME = 'user';
-
 schema.methods.verifyPassword = function (password) {
   return this.password === password;
 };
 
-module.exports = exports = mongodb.model (COLLECTION_NAME, schema);
+const MODEL_NAME = 'user';
+const COLLECTION_NAME = 'users';
+
+module.exports = mongodb.resource (MODEL_NAME, schema, COLLECTION_NAME);

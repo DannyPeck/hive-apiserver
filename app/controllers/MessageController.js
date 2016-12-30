@@ -17,7 +17,7 @@ function MessageController () {
 MessageController.prototype.create = function () {
   var opts = {
     on: {
-      preCreate: function (req, doc, callback) {
+      prepareDocument: function (req, doc, callback) {
         doc.org_id = req.user.org_id;
         doc.sender = req.user.username;
 

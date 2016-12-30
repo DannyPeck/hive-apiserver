@@ -22,7 +22,7 @@ blueprint.controller (OrganizationController, ResourceController);
 OrganizationController.prototype.create = function () {
   var opts = {
     on: {
-      preCreate: function (req, doc, callback) {
+      prepareDocument: function (req, doc, callback) {
         Organization.findOne({ name: doc.name }, function (err, organization) {
           if (err) { return callback (err); }
 

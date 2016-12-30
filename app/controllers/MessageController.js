@@ -35,19 +35,20 @@ MessageController.prototype.getAll = function () {
       authorize: function (req, callback) {
         var role = req.user.role;
 
-        if (role !== 'admin') {
-          var queries = req.query;
+        if (role === 'admin') {
+          return callback ();
+        }
 
-          if (_.isEmpty (queries)) {
-            return callback ('unauthorized');
-          }
+        var queries = req.query;
 
-          var whitelist = ['sender', 'receiver'];
+        if (_.isEmpty (queries)) {
+          return callback ('unauthorized');
+        }
 
-          for (var query in queries) {
-            if (!_.includes (whitelist, query)) {
-              return callback ('unauthorized query parameter');
-            }
+        var whitelist = ['sender', 'receiver'];
+        for (var query in queries) {
+          if (!_.includes (whitelist, query)) {
+            return callback ('unauthorized query parameter');
           }
         }
 

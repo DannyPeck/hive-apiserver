@@ -18,18 +18,10 @@ MessageController.prototype.create = function () {
   var opts = {
     on: {
       preCreate: function (req, doc, callback) {
-        var token = req.headers.authorization.split(' ')[1];
+        doc.org_id = req.user.org_id;
+        doc.sender = req.user.username;
 
-        User.findOne({token: token}, function (err, user) {
-          /* istanbul ignore if */
-          if (err) {
-            return callback(err);
-          }
-
-          doc.org_id = user.org_id;
-          doc.sender = user.username;
-          return callback(null, doc);
-        });
+        return callback(null, doc);
       }
     }
   };
@@ -43,19 +35,20 @@ MessageController.prototype.getAll = function () {
       authorize: function (req, callback) {
         var role = req.user.role;
 
-        if (role !== 'admin') {
-          var queries = req.query;
+        if (role === 'admin') {
+          return callback ();
+        }
 
-          if (_.isEmpty (queries)) {
-            return callback ('unauthorized');
-          }
+        var queries = req.query;
 
-          var whitelist = ['sender', 'receiver'];
+        if (_.isEmpty (queries)) {
+          return callback ('unauthorized');
+        }
 
-          for (var query in queries) {
-            if (!_.includes (whitelist, query)) {
-              return callback ('unauthorized query parameter');
-            }
+        var whitelist = ['sender', 'receiver'];
+        for (var query in queries) {
+          if (!_.includes (whitelist, query)) {
+            return callback ('unauthorized query parameter');
           }
         }
 

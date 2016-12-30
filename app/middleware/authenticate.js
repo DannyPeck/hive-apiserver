@@ -2,7 +2,7 @@ var User = require ('../models/User');
 
 var authenticate = {};
 
-authenticate.isAdminToken  = function (req, res, next) {
+authenticate.isAdminToken = function (req, res, next) {
     var role = req.user.role;
 
     if (role !== 'admin') {
@@ -13,7 +13,6 @@ authenticate.isAdminToken  = function (req, res, next) {
 };
 
 authenticate.isAdminUser = function (req, res, next) {
-
   var email = req.body.email;
 
   // retrieve user by token
@@ -34,6 +33,6 @@ authenticate.isAdminUser = function (req, res, next) {
 
     return next ();
   });
-}
+};
 
 module.exports = exports = authenticate;

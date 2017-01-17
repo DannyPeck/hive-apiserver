@@ -16,7 +16,7 @@ UserController.prototype.create = function ()
 {
   var opts = {
     on: {
-      preCreate: function (req, doc, cb) {
+      prepareDocument: function (req, doc, cb) {
         doc.org_id = req.user.org_id;
         async.waterfall ([
           function (callback) {

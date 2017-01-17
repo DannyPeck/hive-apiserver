@@ -124,7 +124,7 @@ describe ('MessageRouter', function () {
     describe ('GET', function () {
       it ('should retrieve all messages', function (done) {
         request (blueprint.app.server.app)
-        .get('/v1/messages')
+        .get('/v1/admin/messages')
         .set('Authorization', 'bearer ' + adminAccessToken)
         .expect(200, done);
       });
@@ -151,7 +151,7 @@ describe ('MessageRouter', function () {
 
       it ('should retrieve all messages by organization', function (done) {
         request (blueprint.app.server.app)
-        .get ('/v1/messages?org_id=' + newAdmin.org_id)
+        .get ('/v1/admin/messages?org_id=' + newAdmin.org_id)
         .set ('Authorization', 'bearer ' + adminAccessToken)
         .expect (200, done);
       });

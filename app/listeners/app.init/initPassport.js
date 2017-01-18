@@ -12,11 +12,12 @@ function initPassport (app) {
   passport.use (new BearerStrategy (
     function (token, done) {
       User.findOne ({token: token}, function (err, user) {
-        /* instanbul ignore if */
+        /* istanbul ignore if */
         if (err) {
           return done (err);
         }
-        else if (!user) {
+
+        if (!user) {
           return done (null, false);
         }
         return done (null, user, {scope: 'all'});

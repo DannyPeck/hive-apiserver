@@ -19,7 +19,7 @@ authenticate.isAdminUser = function (req, res, next) {
 
   // retrieve user by token
   User.findOne ({email: email}, function (err, user) {
-    /* instanbul ignore if */
+    /* istanbul ignore if */
     if (err) {
       return next (err);
     }

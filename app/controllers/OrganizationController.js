@@ -26,6 +26,7 @@ OrganizationController.prototype.create = function () {
     on: {
       prepareDocument: function (req, doc, callback) {
         Organization.findOne ({name: doc.name}, function (err, organization) {
+          /* istanbul next if */
           if (err) {
             return callback (err);
           }
@@ -55,6 +56,7 @@ OrganizationController.prototype.create = function () {
             var newAdmin = new User (adminData);
 
             newAdmin.save (function (err, user) {
+              /* istanbul next if */
               if (err) {
                 return callback (err);
               }

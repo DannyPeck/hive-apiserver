@@ -32,7 +32,7 @@ LoginController.prototype.login = function () {
       var data = {email: req.body.email};
 
       User.findOne (data, function (err, user) {
-        /* instanbul ignore if */
+        /* istanbul ignore if */
         if (err) {
           return callback (err);
         }
@@ -51,6 +51,7 @@ LoginController.prototype.login = function () {
 
           user.token = access_token;
           user.save (function (err, user) {
+            /* istanbul next if */
             if (err) {
               return callback (err);
             }

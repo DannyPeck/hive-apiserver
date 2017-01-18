@@ -1,5 +1,8 @@
-var nodemailer = require('nodemailer');
-var stubTransport = require('nodemailer-stub-transport');
+'use strict';
+
+var nodemailer    = require ('nodemailer')
+  , stubTransport = require ('nodemailer-stub-transport')
+  ;
 
 var mailers = {};
 
@@ -18,15 +21,16 @@ var sendEmail = function (transporter, emailer, docs, callback) {
   };
 
   // send mail with defined transport object
-  transporter.sendMail(mailOptions, function(err, info){
-    if (err) { return callback (err); }
+  transporter.sendMail (mailOptions, function (err, info) {
+    if (err) {
+      return callback (err);
+    }
     callback (null, {org_id: docs.organization._id, admin_id: docs.user._id});
   });
 };
 
 /* istanbul ignore next */
-mailers.mailerTransport  = function (docs, callback) {
-
+mailers.mailerTransport = function (docs, callback) {
   var emailer = 'HiveEmailer@gmail.com';
 
   var connection = {
@@ -41,13 +45,13 @@ mailers.mailerTransport  = function (docs, callback) {
   };
 
   // create reusable transporter object using the default SMTP transport
-  var transporter = nodemailer.createTransport(connection);
+  var transporter = nodemailer.createTransport (connection);
 
   sendEmail (transporter, emailer, docs, callback);
 };
 
 mailers.mailerStub = function (docs, callback) {
-  var transporter = nodemailer.createTransport(stubTransport());
+  var transporter = nodemailer.createTransport (stubTransport ());
 
   var emailer = 'HiveEmailer@gmail.com';
 
@@ -58,7 +62,7 @@ mailers.resolveMailer = function () {
   if (process.env.NODE_ENV === 'test') {
     return mailers.mailerStub;
   }
-  else{
+  else {
     /* istanbul ignore next */
     return mailers.mailerTransport;
   }

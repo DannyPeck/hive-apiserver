@@ -1,3 +1,5 @@
+'use strict';
+
 var blueprint = require ('@onehilltech/blueprint')
   , mongodb = require ('@onehilltech/blueprint-mongodb')
   , ResourceController = mongodb.ResourceController
@@ -23,12 +25,15 @@ OrganizationController.prototype.create = function () {
   var opts = {
     on: {
       prepareDocument: function (req, doc, callback) {
-        Organization.findOne({ name: doc.name }, function (err, organization) {
-          if (err) { return callback (err); }
+        Organization.findOne ({name: doc.name}, function (err, organization) {
+          if (err) {
+            return callback (err);
+          }
 
           if (organization) {
             return callback ('Organization already exists', null);
-          } else {
+          }
+          else {
             return callback (null, doc);
           }
         });
@@ -50,17 +55,19 @@ OrganizationController.prototype.create = function () {
             var newAdmin = new User (adminData);
 
             newAdmin.save (function (err, user) {
-              if (err) { return callback (err); }
+              if (err) {
+                return callback (err);
+              }
 
               callback (null, {user: user, organization: organization});
             });
           },
-          nodeMailers.resolveMailer()
+          nodeMailers.resolveMailer ()
         ], cb);
       }
     }
   };
-  return mongodb.ResourceController.prototype.create.call(this, opts);
+  return mongodb.ResourceController.prototype.create.call (this, opts);
 };
 
 module.exports = exports = OrganizationController;

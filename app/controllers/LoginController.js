@@ -1,3 +1,5 @@
+'use strict';
+
 var blueprint = require ('@onehilltech/blueprint')
   , jwt = require ('jsonwebtoken')
   ;
@@ -31,7 +33,9 @@ LoginController.prototype.login = function () {
 
       User.findOne (data, function (err, user) {
         /* instanbul ignore if */
-        if (err) { return callback (err); }
+        if (err) {
+          return callback (err);
+        }
 
         if (!user) {
           res.status (404).send ('User not found');
@@ -41,15 +45,17 @@ LoginController.prototype.login = function () {
         }
         else {
           var secret = blueprint.app.configs.server.middleware.jwt.secret;
-          var access_token = jwt.sign ({ _id: user._id }, secret);
+          var access_token = jwt.sign ({_id: user._id}, secret);
 
           delete user.token;
 
           user.token = access_token;
           user.save (function (err, user) {
-            if (err) { return callback (err); }
+            if (err) {
+              return callback (err);
+            }
 
-            res.status (200).json ({ token: user.token });
+            res.status (200).json ({token: user.token});
           });
         }
       });

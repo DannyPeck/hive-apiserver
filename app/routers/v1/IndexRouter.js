@@ -1,3 +1,5 @@
+'use strict';
+
 var authenticate = require ('../../middleware/authenticate');
 
 module.exports = exports = {

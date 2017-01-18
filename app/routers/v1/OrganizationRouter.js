@@ -1,6 +1,8 @@
+'use strict';
+
 // OrganizationRouter
 module.exports = exports = {
-  '/organizations' : {
+  '/organizations': {
     resource: {
       controller: 'OrganizationController',
       deny: ['create', 'delete']

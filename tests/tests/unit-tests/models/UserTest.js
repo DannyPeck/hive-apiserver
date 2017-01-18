@@ -1,11 +1,13 @@
+'use strict';
+
 var blueprint = require ('@onehilltech/blueprint')
-  , request   = require ('supertest')
-  , expect    = require ('chai').expect
+  , request = require ('supertest')
+  , expect = require ('chai').expect
   ;
 
 var appPath = require ('../../../fixtures/appPath');
-var users   = require ('../../../fixtures/users');
-var User    = require ('../../../../app/models/User');
+var users = require ('../../../fixtures/users');
+var User = require ('../../../../app/models/User');
 
 describe ('UserModel', function () {
 
@@ -23,18 +25,18 @@ describe ('UserModel', function () {
     before (function (done) {
       // intialize test user
       var userData = users[0];
-      user = new User(userData);
+      user = new User (userData);
 
       return done ();
     });
 
     it ('should succeed to verifyPassword with correct password', function (done) {
-      expect (user.verifyPassword('test')).to.be.true;
+      expect (user.verifyPassword ('test')).to.be.true;
       return done ();
     });
 
     it ('should fail to verifyPassword with wrong password', function (done) {
-      expect (user.verifyPassword('incorrect')).to.be.false;
+      expect (user.verifyPassword ('incorrect')).to.be.false;
       return done ();
     });
   });

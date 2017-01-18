@@ -1,6 +1,8 @@
+'use strict';
+
 // UserRouter
 module.exports = exports = {
-  '/users' : {
+  '/users': {
     resource: {
       controller: 'UserController'
     }

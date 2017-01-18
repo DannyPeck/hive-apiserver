@@ -7,7 +7,7 @@ var blueprint = require ('@onehilltech/blueprint')
   ;
 
 var Message = require ('../models/Message')
-  , User    = require ('../models/User')
+  , User = require ('../models/User')
   ;
 
 function MessageController () {
@@ -21,7 +21,7 @@ MessageController.prototype.create = function () {
         doc.org_id = req.user.org_id;
         doc.sender = req.user.username;
 
-        return callback(null, doc);
+        return callback (null, doc);
       }
     }
   };

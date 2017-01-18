@@ -8,7 +8,7 @@ module.exports = {
     $default: {
       connstr: 'mongodb://localhost/hive-apiserver_' + blueprint.env,
 
-      options : {
+      options: {
         db: {
           native_parser: true,
           read_preference: "primary",

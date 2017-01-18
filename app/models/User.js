@@ -1,5 +1,7 @@
-var mongodb  = require ('@onehilltech/blueprint-mongodb')
-  StatPlugin = mongodb.plugins.StatPlugin
+'use strict';
+
+var mongodb    = require ('@onehilltech/blueprint-mongodb')
+  , StatPlugin = mongodb.plugins.StatPlugin
   ;
 
 var Organization = require ('./Organization')

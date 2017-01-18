@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = exports = {
-  name : 'hive-apiserver'
+  name: 'hive-apiserver'
 };

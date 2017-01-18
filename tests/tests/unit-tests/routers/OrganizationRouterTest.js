@@ -1,14 +1,16 @@
-var blueprint     = require ('@onehilltech/blueprint')
-  , request       = require ('supertest')
-  , expect        = require ('chai').expect
-  , nodemailer    = require ('nodemailer')
+'use strict';
+
+var blueprint = require ('@onehilltech/blueprint')
+  , request = require ('supertest')
+  , expect = require ('chai').expect
+  , nodemailer = require ('nodemailer')
   , stubTransport = require ('nodemailer-stub-transport')
-  , async         = require ('async')
+  , async = require ('async')
   ;
 
-var appPath         = require ('../../../fixtures/appPath');
-var organizations   = require ('../../../fixtures/organizations');
-var users           = require ('../../../fixtures/users');
+var appPath = require ('../../../fixtures/appPath');
+var organizations = require ('../../../fixtures/organizations');
+var users = require ('../../../fixtures/users');
 
 describe ('OrganizationRouter', function () {
   before (function (done) {
@@ -39,7 +41,9 @@ describe ('OrganizationRouter', function () {
 
           var organization = new Organization (orgData);
           organization.save (function (err, res) {
-            if (err) { return callback (err); }
+            if (err) {
+              return callback (err);
+            }
 
             org_id = res._id;
             return callback ();
@@ -54,7 +58,9 @@ describe ('OrganizationRouter', function () {
           newAdmin.org_id = org_id;
 
           newAdmin.save (function (err, user) {
-            if (err) { return callback (err); }
+            if (err) {
+              return callback (err);
+            }
 
             var data = {
               email: user.email,
@@ -62,15 +68,17 @@ describe ('OrganizationRouter', function () {
             };
 
             request (blueprint.app.server.app)
-            .post ('/admin/login')
-            .send (data)
-            .expect (200)
-            .end (function (err, res) {
-              if (err) { return callback (err); }
+              .post ('/admin/login')
+              .send (data)
+              .expect (200)
+              .end (function (err, res) {
+                if (err) {
+                  return callback (err);
+                }
 
-              adminAccessToken = res.body.token;
-              return callback ();
-            });
+                adminAccessToken = res.body.token;
+                return callback ();
+              });
           });
         }
       ], done);
@@ -87,7 +95,9 @@ describe ('OrganizationRouter', function () {
         newUser.org_id = org_id;
 
         newUser.save (function (err, user) {
-          if (err) { return done (err); }
+          if (err) {
+            return done (err);
+          }
 
           var data = {
             email: user.email,
@@ -136,7 +146,9 @@ describe ('OrganizationRouter', function () {
           .expect (200)
 
           .end (function (err, res) {
-            if (err) { return done (err); }
+            if (err) {
+              return done (err);
+            }
 
             adminId = res.body.organization.admin_id;
             organizationId = res.body.organization.org_id;
@@ -147,15 +159,17 @@ describe ('OrganizationRouter', function () {
 
       it ('should create a new admin after creating an organization', function (done) {
         request (blueprint.app.server.app)
-        .get ('/v1/admin/users/' + adminId)
-        .set ('Authorization', 'bearer ' + adminAccessToken)
-        .expect (200)
-        .end (function (err, res) {
-          if (err) { return done (err); }
+          .get ('/v1/admin/users/' + adminId)
+          .set ('Authorization', 'bearer ' + adminAccessToken)
+          .expect (200)
+          .end (function (err, res) {
+            if (err) {
+              return done (err);
+            }
 
-          expect (res.body.user.role).to.equal ('admin');
-          return done ();
-        });
+            expect (res.body.user.role).to.equal ('admin');
+            return done ();
+          });
       });
 
       it ('should fail to create an organization with existing name', function (done) {
@@ -182,7 +196,9 @@ describe ('OrganizationRouter', function () {
           .set ('Authorization', 'bearer ' + adminAccessToken)
           .expect (200)
           .end (function (err, res) {
-            if (err) { return done (err); }
+            if (err) {
+              return done (err);
+            }
 
             expect (res.body.organization._id).to.equal (organizationId);
             return done ();
@@ -202,7 +218,9 @@ describe ('OrganizationRouter', function () {
           .send (updatedOrganization)
           .expect (200)
           .end (function (err, res) {
-            if (err) { return done (err); }
+            if (err) {
+              return done (err);
+            }
 
             expect (res.body.organization.website).to.equal ('webweb@org.com');
             return done ();

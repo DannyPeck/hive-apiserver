@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+'use strict';
+
 var winston   = require ('winston')
   , blueprint = require ('@onehilltech/blueprint')
   ;

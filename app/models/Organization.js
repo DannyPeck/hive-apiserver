@@ -1,8 +1,10 @@
+'use strict';
+
 var mongodb    = require ('@onehilltech/blueprint-mongodb')
   , StatPlugin = mongodb.plugins.StatPlugin
   ;
 
-var schema = new mongodb.Schema({
+var schema = new mongodb.Schema ({
   name:       {type: String, required: true, trim: true},
   location:   {type: String, required: true, trim: true},
   website:    {type: String, required: true, trim: true},

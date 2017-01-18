@@ -1,6 +1,8 @@
+'use strict';
+
 // MessageRouter
 module.exports = exports = {
-  '/messages' : {
+  '/messages': {
     resource: {
       controller: 'MessageController',
       deny: ['delete']

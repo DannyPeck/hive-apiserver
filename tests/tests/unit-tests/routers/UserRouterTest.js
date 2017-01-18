@@ -1,11 +1,13 @@
+'use strict';
+
 var blueprint = require ('@onehilltech/blueprint')
-  , request   = require ('supertest')
-  , expect    = require ('chai').expect
-  , async     = require ('async')
+  , request = require ('supertest')
+  , expect = require ('chai').expect
+  , async = require ('async')
   ;
 
 var appPath = require ('../../../fixtures/appPath')
-  , users   = require ('../../../fixtures/users')
+  , users = require ('../../../fixtures/users')
   , organizations = require ('../../../fixtures/organizations')
   ;
 
@@ -37,7 +39,9 @@ describe ('UserRouter', function () {
 
           var organization = new Organization (orgData);
           organization.save (function (err, res) {
-            if (err) { return callback (err); }
+            if (err) {
+              return callback (err);
+            }
 
             org_id = res._id;
             return callback ();
@@ -51,7 +55,9 @@ describe ('UserRouter', function () {
           newAdmin.org_id = org_id;
 
           newAdmin.save (function (err, user) {
-            if (err) { return callback (err); }
+            if (err) {
+              return callback (err);
+            }
 
             var data = {
               email: user.email,
@@ -59,17 +65,17 @@ describe ('UserRouter', function () {
             };
 
             request (blueprint.app.server.app)
-            .post ('/login')
-            .send (data)
-            .expect (200)
-            .end (function (err, res) {
-              if (err) {
-                return callback (err);
-              }
+              .post ('/login')
+              .send (data)
+              .expect (200)
+              .end (function (err, res) {
+                if (err) {
+                  return callback (err);
+                }
 
-              adminAccessToken = res.body.token;
-              return callback ();
-            });
+                adminAccessToken = res.body.token;
+                return callback ();
+              });
           });
         }
       ], done);
@@ -87,7 +93,9 @@ describe ('UserRouter', function () {
         newUser.org_id = org_id;
 
         newUser.save (function (err, user) {
-          if (err) { return done (err); }
+          if (err) {
+            return done (err);
+          }
 
           var data = {
             email: user.email,
@@ -133,39 +141,41 @@ describe ('UserRouter', function () {
           .send ({user: data})
           .expect (200)
           .end (function (err, res) {
-            if (err) { return done (err); }
+            if (err) {
+              return done (err);
+            }
 
             userId = res.body.user._id;
             expect (res.body.user.email).to.equal (data.email);
-            return done();
+            return done ();
           });
       });
 
       it ('should fail to create a user with an existing email address', function (done) {
         var data = users[3];
         request (blueprint.app.server.app)
-        .post ('/v1/admin/users') // route
-        .set ('Authorization', 'bearer ' + adminAccessToken)
-        .send ({user: data})
-        .expect (400)
-        .end (function (err, res) {
-          expect (res.error.text).to.equal ('email already taken');
-          return done ();
-        });
+          .post ('/v1/admin/users') // route
+          .set ('Authorization', 'bearer ' + adminAccessToken)
+          .send ({user: data})
+          .expect (400)
+          .end (function (err, res) {
+            expect (res.error.text).to.equal ('email already taken');
+            return done ();
+          });
       });
 
       it ('should fail to create a user with conflicting username within an organization', function (done) {
         var data = users[3];
         data.email = 'noconflict@gmail.com';
         request (blueprint.app.server.app)
-        .post ('/v1/admin/users') // route
-        .set ('Authorization', 'bearer ' + adminAccessToken)
-        .send ({user: data})
-        .expect (400)
-        .end (function (err, res) {
-          expect (res.error.text).to.equal ('user already exists');
-          return done ();
-        });
+          .post ('/v1/admin/users') // route
+          .set ('Authorization', 'bearer ' + adminAccessToken)
+          .send ({user: data})
+          .expect (400)
+          .end (function (err, res) {
+            expect (res.error.text).to.equal ('user already exists');
+            return done ();
+          });
       });
     });
 
@@ -183,7 +193,9 @@ describe ('UserRouter', function () {
           .set ('Authorization', 'bearer ' + adminAccessToken)
           .expect (200)
           .end (function (err, res) {
-            if (err) { return done (err); }
+            if (err) {
+              return done (err);
+            }
 
             expect (res.body.user._id).to.equal (userId);
             return done ();
@@ -203,7 +215,9 @@ describe ('UserRouter', function () {
           .set ('Authorization', 'bearer ' + adminAccessToken)
           .expect (200)
           .end (function (err, res) {
-            if (err) { return done (err); }
+            if (err) {
+              return done (err);
+            }
 
             expect (res.body.username).to.equal (adminData.username);
             return done ();
@@ -223,7 +237,9 @@ describe ('UserRouter', function () {
           .send ({user: updatedUser})
           .expect (200)
           .end (function (err, res) {
-            if (err) { return done (err); }
+            if (err) {
+              return done (err);
+            }
 
             expect (res.body.user.job_title).to.equal ('developer');
             return done ();

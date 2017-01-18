@@ -1,8 +1,10 @@
+'use strict';
+
 // UserRouter
 module.exports = exports = {
-  '/users' : {
+  '/users': {
     '/profile': {
-      get: { action: 'UserController@profile' }
+      get: {action: 'UserController@profile'}
     }
   }
 };

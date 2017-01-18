@@ -1,10 +1,12 @@
+'use strict';
+
 var organizations = [
   {
     organization: {
-      name:       'org1',
-      location:   'place1',
-      website:    'org1@org.com',
-      industry:   'tech'
+      name: 'org1',
+      location: 'place1',
+      website: 'org1@org.com',
+      industry: 'tech'
     },
 
     user: {
@@ -13,10 +15,10 @@ var organizations = [
   },
   {
     organization: {
-      name:       'org2',
-      location:   'place2',
-      website:    'org2@org.com',
-      industry:   'automotive'
+      name: 'org2',
+      location: 'place2',
+      website: 'org2@org.com',
+      industry: 'automotive'
     },
 
     user: {

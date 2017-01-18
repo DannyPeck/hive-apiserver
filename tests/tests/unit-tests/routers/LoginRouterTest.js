@@ -1,11 +1,13 @@
+'use strict';
+
 var blueprint = require ('@onehilltech/blueprint')
-  , request   = require ('supertest')
-  , expect    = require ('chai').expect
-  , async     = require ('async')
+  , request = require ('supertest')
+  , expect = require ('chai').expect
+  , async = require ('async')
   ;
 
 var appPath = require ('../../../fixtures/appPath')
-  , users   = require ('../../../fixtures/users')
+  , users = require ('../../../fixtures/users')
   , organizations = require ('../../../fixtures/organizations')
   ;
 
@@ -36,7 +38,9 @@ describe ('LoginRouter', function () {
 
           var organization = new Organization (orgData);
           organization.save (function (err, res) {
-            if (err) { return callback (err); }
+            if (err) {
+              return callback (err);
+            }
 
             org_id = res._id;
             return callback ();
@@ -49,8 +53,10 @@ describe ('LoginRouter', function () {
 
           newUser.org_id = org_id;
 
-          newUser.save(function (err, user) {
-            if (err) { return callback (err); }
+          newUser.save (function (err, user) {
+            if (err) {
+              return callback (err);
+            }
 
             credentials = {
               email: user.email,
@@ -96,7 +102,7 @@ describe ('LoginRouter', function () {
         var wrongCredentials = {
           email: credentials.email,
           password: 'wrong'
-        }
+        };
 
         request (blueprint.app.server.app)
           .post ('/login')
@@ -107,12 +113,19 @@ describe ('LoginRouter', function () {
       it ('should fail to validate credentials on login', function (done) {
         var wrongCredentials = {
           email: credentials.email
-        }
+        };
 
         request (blueprint.app.server.app)
           .post ('/login')
           .send (wrongCredentials)
           .expect (400, done);
+      });
+
+      it ('should fail to access route with fake token', function (done) {
+        request (blueprint.app.server.app)
+          .get ('/v1/users/profile')
+          .set ('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ODUzODVjN2IzYTk2YTkxODljNjRkMTIiLCJpYXQiOjE0ODQ2OTI4ODN9.iX6-MVkgvNMcWyVzZbxHmHkwwNKiNDUtVyLCkoA6s6B')
+          .expect (401, done);
       });
     });
   });
@@ -128,13 +141,15 @@ describe ('LoginRouter', function () {
       var newUser = new User (adminData);
       adminData.org_id = org_id;
 
-      newUser.save(function (err, user) {
-        if (err) { return done (err); }
+      newUser.save (function (err, user) {
+        if (err) {
+          return done (err);
+        }
 
         credentials = {
           email: user.email,
           password: user.password
-        }
+        };
 
         return done ();
       });
@@ -161,7 +176,7 @@ describe ('LoginRouter', function () {
         var invalidCredentials = {
           email: userData.email,
           password: userData.password
-        }
+        };
 
         request (blueprint.app.server.app)
           .post ('/admin/login')
@@ -170,16 +185,15 @@ describe ('LoginRouter', function () {
       });
 
       it ('should fail to login with an unknown email', function (done) {
-          var unknownCredentials = {
-              email: 'unknown',
-              password: credentials.password
-          }
+        var unknownCredentials = {
+          email: 'unknown',
+          password: credentials.password
+        };
 
-          request(blueprint.app.server.app)
-              .post ('/admin/login')
-              .send (unknownCredentials)
-              .expect (404, done);
-
+        request (blueprint.app.server.app)
+          .post ('/admin/login')
+          .send (unknownCredentials)
+          .expect (404, done);
       });
     });
   });

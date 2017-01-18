@@ -120,6 +120,13 @@ describe ('LoginRouter', function () {
           .send (wrongCredentials)
           .expect (400, done);
       });
+
+      it ('should fail to access route with fake token', function (done) {
+        request (blueprint.app.server.app)
+          .get ('/v1/users/profile')
+          .set ('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ODUzODVjN2IzYTk2YTkxODljNjRkMTIiLCJpYXQiOjE0ODQ2OTI4ODN9.iX6-MVkgvNMcWyVzZbxHmHkwwNKiNDUtVyLCkoA6s6B')
+          .expect (401, done);
+      });
     });
   });
 

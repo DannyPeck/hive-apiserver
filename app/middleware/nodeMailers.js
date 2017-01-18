@@ -22,7 +22,7 @@ var sendEmail = function (transporter, emailer, docs, callback) {
 
   // send mail with defined transport object
   transporter.sendMail (mailOptions, function (err, info) {
-    /* istanbul next if */
+    /* istanbul ignore if */
     if (err) {
       return callback (err);
     }

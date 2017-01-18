@@ -51,7 +51,7 @@ LoginController.prototype.login = function () {
 
           user.token = access_token;
           user.save (function (err, user) {
-            /* istanbul next if */
+            /* istanbul ignore if */
             if (err) {
               return callback (err);
             }

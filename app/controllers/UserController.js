@@ -22,7 +22,7 @@ UserController.prototype.create = function () {
         async.waterfall ([
           function (callback) {
             User.findOne ({email: doc.email}, function (err, user) {
-              /* istanbul next if */
+              /* istanbul ignore if */
               if (err) {
                 return callback (err);
               }
@@ -38,7 +38,7 @@ UserController.prototype.create = function () {
 
           function (doc, callback) {
             User.findOne ({username: doc.username, org_id: doc.org_id}, function (err, user) {
-              /* istanbul next if */
+              /* istanbul ignore if */
               if (err) {
                 return callback (err);
               }

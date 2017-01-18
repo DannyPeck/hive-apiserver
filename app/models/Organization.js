@@ -1,4 +1,5 @@
-var mongodb = require ('@onehilltech/blueprint-mongodb')
+var mongodb    = require ('@onehilltech/blueprint-mongodb')
+  , StatPlugin = mongodb.plugins.StatPlugin
   ;
 
 var schema = new mongodb.Schema({
@@ -7,6 +8,9 @@ var schema = new mongodb.Schema({
   website:    {type: String, required: true, trim: true},
   industry:   {type: String, required: true, trim: true}
 });
+
+// register stat plugin with schema
+schema.plugin (StatPlugin);
 
 const MODEL_NAME = 'organization';
 const COLLECTION_NAME = 'organizations';

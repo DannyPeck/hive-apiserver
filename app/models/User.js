@@ -1,4 +1,5 @@
-var mongodb = require ('@onehilltech/blueprint-mongodb')
+var mongodb  = require ('@onehilltech/blueprint-mongodb')
+  , StatPlugin = mongodb.plugins.StatPlugin
   ;
 
 var Organization = require ('./Organization')
@@ -6,7 +7,7 @@ var Organization = require ('./Organization')
 
 const roles = ['user', 'admin'];
 
-var schema = new mongodb.Schema({
+var schema = new mongodb.Schema ({
   org_id:     {type: mongodb.Schema.ObjectId, ref: Organization.modelName, required: false, validation: { optional: true }},
   email:      {type: String, required: true, trim: true},
   username:   {type: String, required: true, trim: true},
@@ -15,6 +16,9 @@ var schema = new mongodb.Schema({
   role:       {type: String, required: true, enum: roles},
   token:      {type: String, required: false, trim: true}
 });
+
+// register stat plugin with schema
+schema.plugin (StatPlugin);
 
 schema.methods.verifyPassword = function (password) {
   return this.password === password;

@@ -1,4 +1,5 @@
-var mongodb = require ('@onehilltech/blueprint-mongodb')
+var mongodb    = require ('@onehilltech/blueprint-mongodb')
+  , StatPlugin = mongodb.plugins.StatPlugin
   ;
 
 var Organization = require ('./Organization')
@@ -14,6 +15,9 @@ var schema = new mongodb.Schema ({
   title:    {type: String, required: true, trim: true},
   content:  {type: String, required: true, trim: true}
 });
+
+// register stat plugin with schema
+schema.plugin (StatPlugin);
 
 const MODEL_NAME = 'message';
 const COLLECTION_NAME = 'messages';

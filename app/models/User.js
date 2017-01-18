@@ -1,5 +1,5 @@
 var mongodb  = require ('@onehilltech/blueprint-mongodb')
-  StatPlugin = mongodb.plugins.StatPlugin
+  , StatPlugin = mongodb.plugins.StatPlugin
   ;
 
 var Organization = require ('./Organization')
